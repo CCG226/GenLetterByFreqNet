@@ -9,7 +9,7 @@ namespace GenLetterByFreqNET
     internal static class FrequencyChartBuilder
     { 
 
-
+        //default character chart 
         public static (char Character, double FrequencyValue, double CumulativeValue)[] Default()
          { 
             (char Character, double FrequencyValue, double CumulativeValue)[] NewChart = new (char Character, double FrequencyValue, double CumulativeValue)[26]
@@ -42,8 +42,11 @@ namespace GenLetterByFreqNET
                 ( 'Z', 0.2722,0 ),
             };
 
+            CalculateCumulativeSumForChart(NewChart);
+        
             return NewChart;
         }
+        //default character chart with overridden frequency values 
         public static (char Character, double FrequencyValue, double CumulativeValue)[] CustomPercent(double[] weights)
         {
             string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -57,8 +60,12 @@ namespace GenLetterByFreqNET
                 NewChart[i].CumulativeValue = 0;
 
             }
+
+          CalculateCumulativeSumForChart(NewChart);
+
             return NewChart;
         }
+        //entire chart is to be overridden by user provided dictionary of character values and their corresponding frequency values 
         public static (char Character, double FrequencyValue, double CumulativeValue)[] CustomCharacterSet(Dictionary<char, double> importedSet)
         {
             (char Character, double FrequencyValue, double CumulativeValue)[] NewChart = new (char Character, double FrequencyValue, double CumulativeValue)[importedSet.Count];
@@ -72,11 +79,36 @@ namespace GenLetterByFreqNET
                 i++;
             }
 
+           CalculateCumulativeSumForChart(NewChart);
+
             return NewChart;
         }
-        private static void CalculateCumulativeSumForChart()
+        //calculates cummulative sum of the charts frequency value and
+        //stores result in each elements CumulativeValue property
+        //mutltiplied by a 1000 so that we can cleanly just randomly generate a number 
+        //between 0-1000 instead of between 1-100 as that would require the
+        //need to generate messy random decimal numbers to be accurate
+       private static void CalculateCumulativeSumForChart((char Character, double FrequencyValue, double CumulativeValue)[] chart)
         {
-            throw new NotImplementedException();
+            //contains and tracks cummulative sum value
+            double currVal = 0;
+
+            for(int i = 0; i < chart.Length; i++)
+            {
+                if(i == 0)//special case
+                {
+                    currVal = chart[0].FrequencyValue * 1000;
+                    chart[i].CumulativeValue = Math.Round(currVal);
+                
+                }
+                else
+                {
+                    currVal = (chart[i].FrequencyValue * 1000) + chart[i - 1].CumulativeValue;
+                    chart[i].CumulativeValue = Math.Round(chart[i].CumulativeValue + currVal);
+                }
+            
+            }
+
         }
     }
 }

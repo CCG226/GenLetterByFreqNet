@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace GenLetterByFreqNET
 {
     internal class InvalidOverrideWeightArraySize : Exception
-
     {
 
         public InvalidOverrideWeightArraySize() { }
@@ -31,6 +30,15 @@ namespace GenLetterByFreqNET
         public InvalidWeightTotalException() { }
 
         public InvalidWeightTotalException(string message)
+            : base(message) { }
+    }
+    internal class ChartMappingFailureException : Exception
+
+    {
+
+        public ChartMappingFailureException() { }
+
+        public ChartMappingFailureException(string message)
             : base(message) { }
     }
 }
