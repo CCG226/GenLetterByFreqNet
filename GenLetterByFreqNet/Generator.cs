@@ -4,6 +4,10 @@ namespace GenLetterByFreqNET
 {
     public class Generator
     {
+        /// <summary>
+        /// NOTE: USING TUPLE FOR CharacterFrequencyChart ARRAY FOR FUN TO MAXIMIZE PERFORMANCE 
+        /// I recgonize it would be better for readability if Tuple for CharFrequencyChart was a class 
+        /// </summary>
         private (char Character, double FrequencyValue, double CumulativeValue)[] CharFrequencyChart;
         //Default set up of all alphabet chars A-Z, generation based off of letter frequencies in english vocabulary
         public Generator()
