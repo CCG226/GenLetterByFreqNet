@@ -5,12 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenLetterByFreqNET
-{ 
-    internal static class FrequencyChartBuilder
-    { 
-
+{
+    internal class FrequencyChartBuilder
+    {
+        public FrequencyChartBuilder(bool accMode)
+        {
+            highAccuracyMode = accMode;
+        }
+        private bool highAccuracyMode { get; set; }
         //default character chart 
-        public static (char Character, double FrequencyValue, double CumulativeValue)[] Default()
+        public (char Character, double FrequencyValue, double CumulativeValue)[] Default()
          { 
             (char Character, double FrequencyValue, double CumulativeValue)[] NewChart = new (char Character, double FrequencyValue, double CumulativeValue)[26]
             {
@@ -46,27 +50,9 @@ namespace GenLetterByFreqNET
         
             return NewChart;
         }
-        //default character chart with overridden frequency values 
-        public static (char Character, double FrequencyValue, double CumulativeValue)[] CustomPercent(double[] weights)
-        {
-            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-            (char Character, double FrequencyValue, double CumulativeValue)[] NewChart = new (char Character, double FrequencyValue, double CumulativeValue)[26];
-        
-            for(int i = 0; i < weights.Length; i++)
-            {
-                NewChart[i].Character = alphabet[i];
-                NewChart[i].FrequencyValue = weights[i];
-                NewChart[i].CumulativeValue = 0;
-
-            }
-
-          CalculateCumulativeSumForChart(NewChart);
-
-            return NewChart;
-        }
-        //entire chart is to be overridden by user provided dictionary of character values and their corresponding frequency values 
-        public static (char Character, double FrequencyValue, double CumulativeValue)[] CustomCharacterSet(Dictionary<char, double> importedSet)
+        //chart is based on user provided dictionary of character values and their corresponding frequency values 
+        public (char Character, double FrequencyValue, double CumulativeValue)[] CustomCharacterSet(Dictionary<char, double> importedSet)
         {
             (char Character, double FrequencyValue, double CumulativeValue)[] NewChart = new (char Character, double FrequencyValue, double CumulativeValue)[importedSet.Count];
 
@@ -83,27 +69,26 @@ namespace GenLetterByFreqNET
 
             return NewChart;
         }
-        //calculates cummulative sum of the charts frequency value and
-        //stores result in each elements CumulativeValue property
-        //mutltiplied by a 1000 so that we can cleanly just randomly generate a number 
-        //between 0-1000 instead of between 1-100 as that would require the
-        //need to generate messy random decimal numbers to be accurate
-       private static void CalculateCumulativeSumForChart((char Character, double FrequencyValue, double CumulativeValue)[] chart)
+        //calculates cummulative sum of the charts frequency value.
+        //Result is stored in each elements CumulativeValue property.
+        //CumulativeValue is mutltiplied by the multiplier so that we can just randomly generate a integer. 
+        private void CalculateCumulativeSumForChart((char Character, double FrequencyValue, double CumulativeValue)[] chart)
         {
             //contains and tracks cummulative sum value
             double currVal = 0;
+
+            double multiplier = (highAccuracyMode) ? 1000 : 100;
 
             for(int i = 0; i < chart.Length; i++)
             {
                 if(i == 0)//special case
                 {
-                    currVal = chart[0].FrequencyValue * 1000;
-                    chart[i].CumulativeValue = Math.Round(currVal);
-                
+                    currVal = chart[0].FrequencyValue * multiplier;
+                    chart[i].CumulativeValue = Math.Round(currVal);       
                 }
                 else
                 {
-                    currVal = (chart[i].FrequencyValue * 1000) + chart[i - 1].CumulativeValue;
+                    currVal = (chart[i].FrequencyValue * multiplier) + chart[i - 1].CumulativeValue;
                     chart[i].CumulativeValue = Math.Round(chart[i].CumulativeValue + currVal);
                 }
             

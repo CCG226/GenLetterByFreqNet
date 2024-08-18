@@ -5,37 +5,23 @@ namespace GenLetterByFreqNET
     public class Generator
     {
         /// <summary>
-        /// NOTE: USING TUPLE FOR CharacterFrequencyChart ARRAY FOR FUN TO MAXIMIZE PERFORMANCE 
-        /// I recgonize it would be better for readability if Tuple for CharFrequencyChart was a class 
+        /// NOTE: Using tuple for CharacterFrequencyChart Array instead of class, idk why
         /// </summary>
         private (char Character, double FrequencyValue, double CumulativeValue)[] CharFrequencyChart;
-        //Default set up of all alphabet chars A-Z, generation based off of letter frequencies in english vocabulary
-        public Generator()
+        //Default set up of all alphabet chars A-Z, generation based off of letter frequencies in oxford english dictionary
+        public Generator(bool highAccuracyMode = true)
         {
-            CharFrequencyChart = FrequencyChartBuilder.Default();
+            FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder(highAccuracyMode);
+            CharFrequencyChart = freqChartBuilder.Default();
         }
-        //This Generator set up allows user to override default character frequency values
-        //that control how likely at random chacter is to be generated 
-        //pass in a array of 26 decimal values, 
-        //each array position represents a alphabetical character starting at A
-        public Generator(double[] overrideLetterWeights)
+        //This set up allows users to replace the default ocford character chart.
+        //The char keys in the dictionary will be the charts character values.
+        //The double values in the dictionary will be the corresponding character key's frequency value.
+        public Generator(Dictionary<char, double> overrideCharacterSet, bool highAccuracyMode = true)
         {
-            ArgValidator.isOverrideWeightsSizeEqualToAlphabetSize(overrideLetterWeights);
-
-            ArgValidator.isWeightsEqualTo100(overrideLetterWeights);
-
-            CharFrequencyChart = FrequencyChartBuilder.CustomPercent(overrideLetterWeights);
-
-        }
-        //this set up allows users to override the entire character chart
-        //the char keys in the dictionary will be the charts character values
-        //the double values in the dictionary will be the corresponding
-        //character key's frequency value
-        public Generator(Dictionary<char, double> overrideCharacterSet)
-        {
-            ArgValidator.isWeightsEqualTo100(overrideCharacterSet);
-          
-            CharFrequencyChart = FrequencyChartBuilder.CustomCharacterSet(overrideCharacterSet);
+            ArgValidator.isWeightCustomValuesValid(overrideCharacterSet);
+            FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder(highAccuracyMode);
+            CharFrequencyChart = freqChartBuilder.CustomCharacterSet(overrideCharacterSet);
         }
         //generate single random character 
         public char GetRandomCharacter()
@@ -58,24 +44,21 @@ namespace GenLetterByFreqNET
             return randomizedCharacterSequence.ToString();
 
         }
-        //generate random int from 0 to 100,000
-        //*(customized frequency charts allow for 99,500 - 100,500 to be max of random range)
+        //generate random int, int corresponds to cummulative value
         private int GenerateRandomInteger()
         {
-            return new Random().Next(0, Convert.ToInt32(CharFrequencyChart[CharFrequencyChart.Length - 1].CumulativeValue) + 1);
+            int range = Convert.ToInt32(CharFrequencyChart[CharFrequencyChart.Length - 1].CumulativeValue) + 1;
+            return new Random().Next(0, range);
         }
 
-        //iterate through character chart's cumulative values
-        //to map randomly generted integer to a character
+        //Iterates through character chart's cumulative values to map randomly generated integer to a character
         private char MapRandomValueToCharacter(int randValue)
         {
 
             for(int i = 0; i < CharFrequencyChart.Length; i++)
             {
-                //if random value is less than or equal to cummulative value
-                //of current character iterations cummulative value
-                //then return current character as a character representation of
-                //the randomly generated integer value 
+                //if random value is less than or equal to cummulative value of current character iterations cummulative value
+                //then return current character as a character representation of the randomly generated integer value 
                 if (randValue <= CharFrequencyChart[i].CumulativeValue)
                 {
                     return CharFrequencyChart[i].Character;
@@ -83,7 +66,7 @@ namespace GenLetterByFreqNET
     
            }
             //if for some reason we fail to map randomly generated integer
-            //this should never happen
+            //this should never happen!
             throw new ChartMappingFailureException("Failed To Map Randomly Generated Value To A Valid Character");
             
         }

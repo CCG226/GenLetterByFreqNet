@@ -23,13 +23,13 @@ namespace GenLetterByFreqNET
         public InvalidCharacterAmountException(string message)
             : base(message) { }
     }
-    internal class InvalidWeightTotalException : Exception
+    internal class InvalidWeightException : Exception
 
     {
 
-        public InvalidWeightTotalException() { }
+        public InvalidWeightException() { }
 
-        public InvalidWeightTotalException(string message)
+        public InvalidWeightException(string message)
             : base(message) { }
     }
     internal class ChartMappingFailureException : Exception
