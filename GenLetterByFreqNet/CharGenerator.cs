@@ -2,11 +2,11 @@
 
 namespace GenLetterByFreqNET
 {
-    public class Generator
+    public class CharGenerator
     {
         private (char Character, double FrequencyValue, double CumulativeValue)[] CharFrequencyChart;
         //Default set up of all alphabet chars A-Z, generation based off of letter frequencies in oxford english dictionary
-        public Generator(bool highAccuracyMode = true)
+        public CharGenerator(bool highAccuracyMode = true)
         {
             FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder(highAccuracyMode);
             CharFrequencyChart = freqChartBuilder.Default();
@@ -14,7 +14,7 @@ namespace GenLetterByFreqNET
         //This set up allows users to replace the default ocford character chart.
         //The char keys in the dictionary will be the charts character values.
         //The double values in the dictionary will be the corresponding character key's frequency value.
-        public Generator(Dictionary<char, double> overrideCharacterSet, bool highAccuracyMode = true)
+        public CharGenerator(Dictionary<char, double> overrideCharacterSet, bool highAccuracyMode = true)
         {
             ArgValidator.isWeightCustomValuesValid(overrideCharacterSet);
             FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder(highAccuracyMode);

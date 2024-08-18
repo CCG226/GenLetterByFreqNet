@@ -1,9 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutputType>Library</OutputType>
+		<PackageId>GenLetterByFreqNet</PackageId>
+		<Version>2.1.1</Version>
+		<Authors>Cown877</Authors>
+		<Description>
+			Randomly Generate Characters Based Off Of Character Frequency Value.
+			Characters With Higher Freqeuncy Percent Values Are More Likely To Be
+			Randomly Generated.
+		</Description>
+	</PropertyGroup>
 </Project>

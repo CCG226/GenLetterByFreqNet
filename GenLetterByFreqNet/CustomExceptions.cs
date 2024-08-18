@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 
 namespace GenLetterByFreqNET
 {
-    internal class InvalidOverrideWeightArraySize : Exception
-    {
 
-        public InvalidOverrideWeightArraySize() { }
-
-        public InvalidOverrideWeightArraySize(string message)
-            : base(message) { }
-    }
     internal class InvalidCharacterAmountException : Exception
 
     {
