@@ -1,10 +1,13 @@
-﻿using System.Text;
+﻿using GenLetterByFreqNet;
+using System.Text;
 
 namespace GenLetterByFreqNET
 {
     public class CharGenerator
     {
-        private (char Character, double FrequencyValue, double CumulativeValue)[] CharFrequencyChart;
+
+
+        private readonly CharFrequencyData[] CharFrequencyChart;
         //Default set up of all alphabet chars A-Z, generation based off of letter frequencies in oxford english dictionary
         public CharGenerator(bool highAccuracyMode = true)
         {
@@ -16,10 +19,15 @@ namespace GenLetterByFreqNET
         //The double values in the dictionary will be the corresponding character key's frequency value.
         public CharGenerator(Dictionary<char, double> overrideCharacterSet, bool highAccuracyMode = true)
         {
+
+            ArgValidator.isCustomSetSizeValid(overrideCharacterSet);
+
             ArgValidator.isWeightCustomValuesValid(overrideCharacterSet);
+
             FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder(highAccuracyMode);
             CharFrequencyChart = freqChartBuilder.CustomCharacterSet(overrideCharacterSet);
         }
+   
         //generate single random character 
         public char GetRandomCharacter()
         {
@@ -42,14 +50,15 @@ namespace GenLetterByFreqNET
 
         }
         //generate random int, int corresponds to cummulative value
-        private int GenerateRandomInteger()
+        private long GenerateRandomInteger()
         {
-            int range = Convert.ToInt32(CharFrequencyChart[CharFrequencyChart.Length - 1].CumulativeValue) + 1;
-            return new Random().Next(0, range);
+            long rangeMax = Convert.ToInt64(CharFrequencyChart[CharFrequencyChart.Length - 1].CumulativeValue) + 1;
+      
+            return Random.Shared.NextInt64(0, rangeMax);
         }
 
         //Iterates through character chart's cumulative values to map randomly generated integer to a character
-        private char MapRandomValueToCharacter(int randValue)
+        private char MapRandomValueToCharacter(long randValue)
         {
 
             for(int i = 0; i < CharFrequencyChart.Length; i++)
