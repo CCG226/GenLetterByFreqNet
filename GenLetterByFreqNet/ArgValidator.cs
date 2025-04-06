@@ -9,6 +9,7 @@ namespace GenLetterByFreqNET
     internal class ArgValidator
     {
         const int ZERO = 0;
+        const double SMALL_WEIGHT = 0.00001;
         const int MAX_DICT_SIZE = 10_000;
 
         //integer argument must be greater than zero
@@ -29,9 +30,9 @@ namespace GenLetterByFreqNET
 
             foreach (double weight in CharFrequencyChartArg.Values)
             {
-                if(weight < ZERO)
+                if(weight < SMALL_WEIGHT)
                 {
-                    throw new InvalidWeightException("Weight values cannot be less than or equal to zero!");
+                    throw new InvalidWeightException($"Weight values cannot be less than {SMALL_WEIGHT}!");
                 }
             }
 
