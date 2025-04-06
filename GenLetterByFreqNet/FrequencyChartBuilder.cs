@@ -9,11 +9,7 @@ namespace GenLetterByFreqNET
 {
     internal class FrequencyChartBuilder
     {
-        public FrequencyChartBuilder(bool accMode)
-        {
-            highAccuracyMode = accMode;
-        }
-        private bool highAccuracyMode { get; set; }
+
         //default character chart 
         public CharFrequencyData[] Default()
         {
@@ -80,7 +76,7 @@ namespace GenLetterByFreqNET
             //contains and tracks cummulative sum value
             double currCumulativeVal = 0;
 
-            double multiplier = (highAccuracyMode) ? 1000 : 100;
+            int multiplier = SetMultiplier(chart.Min(d => d.FrequencyValue));
 
             for (int i = 0; i < chart.Length; i++)
             {
@@ -97,6 +93,35 @@ namespace GenLetterByFreqNET
                 chart[i].CumulativeValue = Math.Round(currCumulativeVal);
             }
 
+        }
+
+        private int SetMultiplier(double min)
+        {
+            int multi;
+            
+            if(min < 0.00001)
+            {
+                throw new InvalidWeightException($"Weight value {min} is too small!");
+            }
+            else if (min < 0.0001)
+            {
+                multi = 100000;
+            }
+            else if (min < 0.001)
+            {
+                multi = 10000;
+            }
+            else if (min < 0.01)
+            {
+                multi = 1000;
+            }
+            else
+            {
+                multi = 100;
+            }
+            
+
+            return multi;
         }
     }
 }

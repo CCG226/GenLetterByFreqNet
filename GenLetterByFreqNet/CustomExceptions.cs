@@ -25,6 +25,15 @@ namespace GenLetterByFreqNET
         public InvalidWeightException(string message)
             : base(message) { }
     }
+    internal class InvalidDictException : Exception
+
+    {
+
+        public InvalidDictException() { }
+
+        public InvalidDictException(string message)
+            : base(message) { }
+    }
     internal class ChartMappingFailureException : Exception
 
     {
@@ -34,4 +43,5 @@ namespace GenLetterByFreqNET
         public ChartMappingFailureException(string message)
             : base(message) { }
     }
+   
 }

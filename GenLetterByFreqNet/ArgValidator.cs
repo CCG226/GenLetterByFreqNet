@@ -42,11 +42,11 @@ namespace GenLetterByFreqNET
 
             if(CharFrequencyChartArg.Count == ZERO)
             {
-                throw new InvalidWeightException("Custom character set cannot be empty!");
+                throw new InvalidDictException("Custom character set cannot be empty!");
             }
             if (CharFrequencyChartArg.Count > MAX_DICT_SIZE)
             {
-                throw new InvalidWeightException("Custom character set is to big!");
+                throw new InvalidDictException("Custom character set is too big!");
             }
         }
     }

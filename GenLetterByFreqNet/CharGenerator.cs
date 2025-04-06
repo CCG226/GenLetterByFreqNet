@@ -9,22 +9,22 @@ namespace GenLetterByFreqNET
 
         private readonly CharFrequencyData[] CharFrequencyChart;
         //Default set up of all alphabet chars A-Z, generation based off of letter frequencies in oxford english dictionary
-        public CharGenerator(bool highAccuracyMode = true)
+        public CharGenerator()
         {
-            FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder(highAccuracyMode);
+            FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder();
             CharFrequencyChart = freqChartBuilder.Default();
         }
         //This set up allows users to replace the default ocford character chart.
         //The char keys in the dictionary will be the charts character values.
         //The double values in the dictionary will be the corresponding character key's frequency value.
-        public CharGenerator(Dictionary<char, double> overrideCharacterSet, bool highAccuracyMode = true)
+        public CharGenerator(Dictionary<char, double> overrideCharacterSet)
         {
 
             ArgValidator.isCustomSetSizeValid(overrideCharacterSet);
 
             ArgValidator.isWeightCustomValuesValid(overrideCharacterSet);
 
-            FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder(highAccuracyMode);
+            FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder();
             CharFrequencyChart = freqChartBuilder.CustomCharacterSet(overrideCharacterSet);
         }
    
@@ -49,10 +49,10 @@ namespace GenLetterByFreqNET
             return randomizedCharacterSequence.ToString();
 
         }
-        //generate random int, int corresponds to cummulative value
+        // Generates a random integer mapped to the cumulative frequency range
         private long GenerateRandomInteger()
         {
-            long rangeMax = Convert.ToInt64(CharFrequencyChart[CharFrequencyChart.Length - 1].CumulativeValue) + 1;
+            long rangeMax = Convert.ToInt64(CharFrequencyChart[CharFrequencyChart.Length - 1].CumulativeValue);
       
             return Random.Shared.NextInt64(0, rangeMax);
         }
