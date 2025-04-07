@@ -13,7 +13,7 @@ namespace GenLetterByFreqNET
         const int MAX_DICT_SIZE = 10_000;
 
         //integer argument must be greater than zero
-        public static void isAmountLessThanOrEqualToZero(int amount)
+        public static void IsAmountLessThanOrEqualToZero(int amount)
         {
 
             if (amount <= ZERO)
@@ -25,7 +25,7 @@ namespace GenLetterByFreqNET
 
         }
         //weight arguments must be greater than zero
-        public static void isWeightCustomValuesValid(Dictionary<char, double> CharFrequencyChartArg)
+        public static void IsWeightCustomValuesValid(Dictionary<char, double> CharFrequencyChartArg)
         {
 
             foreach (double weight in CharFrequencyChartArg.Values)
@@ -38,7 +38,7 @@ namespace GenLetterByFreqNET
 
         }
 
-        public static void isCustomSetSizeValid(Dictionary<char, double> CharFrequencyChartArg)
+        public static void IsCustomSetSizeValid(Dictionary<char, double> CharFrequencyChartArg)
         {
 
             if(CharFrequencyChartArg.Count == ZERO)
