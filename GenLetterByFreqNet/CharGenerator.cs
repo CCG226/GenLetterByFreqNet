@@ -20,9 +20,9 @@ namespace GenLetterByFreqNET
         public CharGenerator(Dictionary<char, double> overrideCharacterSet)
         {
 
-            ArgValidator.isCustomSetSizeValid(overrideCharacterSet);
+            ArgValidator.IsCustomSetSizeValid(overrideCharacterSet);
 
-            ArgValidator.isWeightCustomValuesValid(overrideCharacterSet);
+            ArgValidator.IsWeightCustomValuesValid(overrideCharacterSet);
 
             FrequencyChartBuilder freqChartBuilder = new FrequencyChartBuilder();
             CharFrequencyChart = freqChartBuilder.CustomCharacterSet(overrideCharacterSet);
@@ -37,7 +37,7 @@ namespace GenLetterByFreqNET
         public string GetRandomCharacters(int amount)
         {
             
-            ArgValidator.isAmountLessThanOrEqualToZero(amount);
+            ArgValidator.IsAmountLessThanOrEqualToZero(amount);
 
             StringBuilder randomizedCharacterSequence = new StringBuilder();
 
